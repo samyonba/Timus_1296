@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <list>
+#include <vector>
 
 using namespace std;
 
@@ -11,7 +12,7 @@ int main()
     size_t n;
     cin >> n;
 
-    list<int> data;
+    vector<int> data;
 
 
     int current = 0;
@@ -31,41 +32,38 @@ int main()
     }
     if (current > 0)
         data.push_back(current);
-    if (data.front() <= 0)
+    if (!data.empty() && data.front() <= 0)
         data.erase(data.begin());
 
 
-    cout << endl;
+    /*cout << endl;
     for (auto c : data)
     {
         cout << c << " ";
-    }
+    }*/
 
-    auto it = data.begin();
-    while (it != data.end())
+    int max_sum = 0;
+
+    for (size_t i = 0; i < data.size(); i += 2)
     {
-        if (*it >= 0)
+        int local_sum = data[i];
+        if (local_sum > max_sum)
+            max_sum = local_sum;
+        for (size_t j = i + 1; j < data.size(); j++)
         {
-
-            while (next(it) != data.end() && next(next(it)) != data.end())
-            {
-                int couple_sum = *next(it) + *next(next(it));
-
-                if (couple_sum < 0)
-                    break;
-
-                *it += couple_sum;
-                data.erase(next(it), next(next(next(it))));
-            }
+            local_sum += data[j];
+            if (local_sum > max_sum)
+                max_sum = local_sum;
         }
-        it = next(it);
     }
 
-    cout << endl;
+    /*cout << endl;
     for (auto c : data)
     {
         cout << c << " ";
-    }
+    }*/
+
+    cout << max_sum << endl;
 
 
     return 0;
